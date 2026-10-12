@@ -1,18 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Game</title>
     <style>
-        /* Reset default styles and set up CSS custom properties for theming */
+        /* Theme colors */
         :root {
             --primary-color: #2196f3;
             --background-color: #f5f5f5;
             --card-back: #1976d2;
             --card-front: #ffffff;
             --text-color: #333333;
-            --success-color: #4caf50;
+            --surface-color: #ffffff;
+            --button-hover-color: #1565c0;
+            --button-active-color: #0d47a1;
+            --focus-color: #2196f3;
+            color-scheme: light;
+        }
+
+        :root[data-theme="dark"] {
+            --primary-color: #1565c0;
+            --background-color: #121820;
+            --card-back: #1565c0;
+            --card-front: #344456;
+            --text-color: #e8edf2;
+            --surface-color: #202b38;
+            --button-hover-color: #1976d2;
+            --button-active-color: #0d47a1;
+            --focus-color: #90caf9;
+            color-scheme: dark;
         }
 
         * {
@@ -48,13 +65,21 @@
             margin-bottom: 0.5rem;
         }
 
+        .theme-toggle {
+            margin-top: 0.75rem;
+        }
+
+        .modal-content .theme-toggle {
+            margin: 0 0 1rem;
+        }
+
         /* Game controls and statistics panel */
         .controls {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
             gap: 1rem;
-            background: white;
+            background: var(--surface-color);
             padding: 1rem;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -87,12 +112,17 @@
             transition: background-color 0.3s ease;
         }
 
+        button:focus-visible {
+            outline: 3px solid var(--focus-color);
+            outline-offset: 3px;
+        }
+
         button:hover {
-            background-color: #1565c0;
+            background-color: var(--button-hover-color);
         }
 
         button.active {
-            background-color: #0d47a1;
+            background-color: var(--button-active-color);
         }
 
         /* Game grid styles with responsive layout */
@@ -123,7 +153,7 @@
         }
 
         .card:focus {
-            outline: 3px solid var(--primary-color);
+            outline: 3px solid var(--focus-color);
             outline-offset: 2px;
         }
 
@@ -173,7 +203,8 @@
         }
 
         .modal-content {
-            background: white;
+            background: var(--surface-color);
+            color: var(--text-color);
             padding: 2rem;
             border-radius: 8px;
             text-align: center;
@@ -190,7 +221,7 @@
         .scores-list {
             max-width: 600px;
             margin: 1rem auto;
-            background: white;
+            background: var(--surface-color);
             padding: 1rem;
             border-radius: 8px;
         }
@@ -218,6 +249,7 @@
         <header class="header">
             <h1>Memory Game</h1>
             <p>Match all the pairs to win! Use keyboard or mouse to play.</p>
+            <button class="theme-toggle" type="button" aria-label="Switch to dark mode">Switch to dark mode</button>
         </header>
 
         <!-- Game statistics panel -->
@@ -255,6 +287,7 @@
     <!-- Win modal -->
     <div class="modal" role="dialog" aria-label="Game Complete">
         <div class="modal-content">
+            <button class="theme-toggle" type="button" aria-label="Switch to dark mode">Switch to dark mode</button>
             <h2>Congratulations!</h2>
             <p>You've completed the game!</p>
             <p class="final-stats"></p>
@@ -286,8 +319,28 @@
             modal: document.querySelector('.modal'),
             finalStats: document.querySelector('.final-stats'),
             gridButtons: document.querySelectorAll('.grid-btn'),
-            scoresList: document.querySelector('.scores-list')
+            scoresList: document.querySelector('.scores-list'),
+            themeToggles: document.querySelectorAll('.theme-toggle')
         };
+
+        const themeStorageKey = 'memoryGameTheme';
+
+        function applyTheme(theme, persist = false) {
+            document.documentElement.dataset.theme = theme;
+            const nextTheme = theme === 'dark' ? 'light' : 'dark';
+            const label = `Switch to ${nextTheme} mode`;
+            elements.themeToggles.forEach(button => {
+                button.textContent = label;
+                button.setAttribute('aria-label', label);
+            });
+
+            if (persist) {
+                localStorage.setItem(themeStorageKey, theme);
+            }
+        }
+
+        const savedTheme = localStorage.getItem(themeStorageKey);
+        applyTheme(savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : 'light');
 
         // Card symbols (emojis) for both grid sizes
         const symbols = {
@@ -480,6 +533,13 @@
                 e.preventDefault();
                 flipCard(card);
             }
+        });
+
+        elements.themeToggles.forEach(button => {
+            button.addEventListener('click', () => {
+                const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+                applyTheme(nextTheme, true);
+            });
         });
 
         document.querySelector('.play-again').addEventListener('click', () => {
