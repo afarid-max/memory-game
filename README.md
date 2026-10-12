@@ -1,40 +1,56 @@
-# Memory Game
+# Browser Games
 
-A responsive and accessible Memory (Concentration) card game built with HTML, CSS, and JavaScript.
+A collection of responsive, standalone childhood games built with HTML, CSS, and JavaScript. Open a game's HTML file directly in a modern browser to play; no installation or external dependencies are required.
 
-## Features
+## Games
 
-- 4x4 and 6x6 grid options
-- Smooth card flip animations
-- Timer and moves counter
-- Star rating system
-- Local storage for best scores
-- Keyboard controls for accessibility
-- Responsive design for all devices
-- No external dependencies
+### Memory Game
 
-## How to Play
+Play the classic Concentration game by finding matching pairs.
 
-1. Open `memory-game.html` in a web browser
-2. Click or use keyboard (Tab + Enter/Space) to flip cards
-3. Find matching pairs to win
-4. Try to complete the game with as few moves as possible
-5. Switch between 4x4 and 6x6 grids using the buttons
+- Choose a 4x4 or 6x6 card grid
+- Track moves, time, and star rating
+- Save best scores in the browser
+- Flip cards with a mouse, touch, or keyboard
+- Switch between light and dark themes
 
-## Technical Details
+**Play:** Open [`memory-game.html`](memory-game.html).
 
-- Pure HTML, CSS, and JavaScript implementation
-- No external libraries or dependencies
-- Fully responsive design using CSS Grid
-- Accessible with ARIA attributes and keyboard controls
-- Local storage for persistent high scores
+### Snake
 
-## Development
+Guide the snake to eat apples, grow longer, and avoid the walls and its own tail.
 
-1. Clone the repository
-2. Open `memory-game.html` in a web browser
-3. Or serve using a local HTTP server:
-   ```bash
-   python3 -m http.server 8000
-   ```
-4. Visit `http://localhost:8000/memory-game.html`
+- Keyboard controls: arrow keys or W, A, S, D
+- Touch direction buttons on small screens
+- Score and locally saved best score
+- Pause and resume with the button, P, or Space
+- Switch between light and dark themes
+
+**Play:** Open [`snake-game.html`](snake-game.html).
+
+**Snake product requirements:** [`PRD_snake_game.md`](PRD_snake_game.md).
+
+## Run the games
+
+The simplest way to play is to open either HTML file in your browser. Alternatively, from this folder, start a local web server:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open:
+
+- Memory Game: <http://localhost:8000/memory-game.html>
+- Snake: <http://localhost:8000/snake-game.html>
+
+## Project details
+
+- Each game is a self-contained HTML file with embedded CSS and JavaScript.
+- No third-party libraries, build tools, or network access are required.
+- Preferences and personal best scores are stored locally in the browser.
+
+## Contributing
+
+1. Clone the repository.
+2. Open a game HTML file directly, or use the local server instructions above.
+3. Keep games self-contained and test them in a browser at desktop and mobile sizes.
